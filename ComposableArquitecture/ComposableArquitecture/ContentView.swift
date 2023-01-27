@@ -6,25 +6,45 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 struct ContentView: View {
+    
+    let store: StoreOf<Counter>
+    
     var body: some View {
-        NavigationView {
-            List {
-                NavigationLink(destination: EmptyView()) {
-                    Text("Counter demo")
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            HStack {
+                Button {
+                    viewStore.send(.decreaseCounter)
+                } label: {
+                    Text("-")
+                        .padding(10)
+                        .background(.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
-                NavigationLink(destination: EmptyView()) {
-                    Text("Favorite primes")
+                .buttonStyle(.plain)
+                Text(viewStore.counter.description)
+                    .padding(5)
+                Button {
+                    viewStore.send(.increaseCounter)
+                } label: {
+                    Text("+")
+                        .padding(10)
+                        .background(.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
             }
-            .navigationBarTitle("State management")
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(store: Store(initialState: Counter.State(),
+                                 reducer: Counter()
+        ))
     }
 }
