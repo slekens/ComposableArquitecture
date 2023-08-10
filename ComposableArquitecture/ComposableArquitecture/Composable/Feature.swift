@@ -8,13 +8,13 @@
 import Foundation
 import ComposableArchitecture
 
-struct Counter: ReducerProtocol {
+struct CounterFeature: Reducer {
     
     struct State: Equatable {
         var counter = 0
     }
     
-    enum Action: Equatable {
+    enum Action {
         case increaseCounter
         case decreaseCounter
     }
@@ -23,14 +23,16 @@ struct Counter: ReducerProtocol {
         
     }
     
-    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
-        switch action {
-        case .increaseCounter:
-            state.counter += 1
-            return .none
-        case .decreaseCounter:
-            state.counter -= 1
-            return .none
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            switch action {
+                case .increaseCounter:
+                    state.counter += 1
+                    return .none
+                case .decreaseCounter:
+                    state.counter -= 1
+                    return .none
+            }
         }
     }
 }

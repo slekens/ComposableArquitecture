@@ -12,8 +12,11 @@ import ComposableArchitecture
 struct ComposableArquitectureApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(store: Store(initialState: Counter.State(),
-                                     reducer: Counter()))
+            ContentView(
+                store: Store(initialState: CounterFeature.State()) {
+                    CounterFeature()
+                }
+            )
         }
     }
 }

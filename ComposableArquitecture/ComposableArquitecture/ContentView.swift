@@ -10,7 +10,9 @@ import ComposableArchitecture
 
 struct ContentView: View {
     
-    let store: StoreOf<Counter>
+    let store: Store<CounterFeature.State, CounterFeature.Action>
+        // Short version:
+        // let store: StoreOf<CounterFeature>
     
     var body: some View {
         WithViewStore(self.store, observe: { $0 }) { viewStore in
@@ -43,8 +45,11 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(store: Store(initialState: Counter.State(),
-                                 reducer: Counter()
-        ))
+        ContentView(
+            store: Store(initialState: CounterFeature.State()) {
+                CounterFeature()
+                    ._printChanges()
+            }
+        )
     }
 }
